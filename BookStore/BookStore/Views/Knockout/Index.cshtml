@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.KnockoutElementId = "knockout-element";
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/knockout")
+
+    <script type="text/javascript">
+        var element = document.getElementById('@ViewBag.KnockoutElementId');
+        if (element) {
+            var apiHelper = new ApiHelper();
+            var app = new Application(apiHelper, Genres);
+            ko.applyBindings(app, element);
+
+            app.run();
+            console.info('Knockout binding complete. Application is running.');
+        } else {
+            console.error("Can't apply knockout bindings. Element with id='@ViewBag.KnockoutElementId' is not found.");
+        }
+    </script>
+}
+
+<div id="@ViewBag.KnockoutElementId">
+    <h2 data-bind="text: header"></h2>
+
+    <div>
+        <h3>Genres</h3>
+        <ul data-bind="foreach: genres.models">
+            <li>
+                <span data-bind="text: title"></span>
+                <p data-bind="html: description"></p>
+            </li>
+        </ul>
+    </div>
+</div>
